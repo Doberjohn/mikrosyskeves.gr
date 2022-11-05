@@ -1,5 +1,5 @@
 import React from "react";
-import {ISVG} from "../interfaces";
+import {ISVG} from "../../../../shared/interfaces";
 
 export const MinusCircleIcon = ({onClick}: ISVG) => {
    return (
