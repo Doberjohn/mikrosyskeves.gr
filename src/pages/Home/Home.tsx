@@ -6,24 +6,34 @@ import {HomeTemplate} from "../../components/templates";
 const Home = () => {
    const products: IProduct[] = [
       {
-         title: 'Rowenta Silence τριγωνικό πέλμα Παρκέ ZR901801',
-         quantity: 4,
+         title: 'ZR901801 - Rowenta Silence τριγωνικό πέλμα Παρκέ',
+         quantity: 1,
+         veryLowStockThreshold: 1,
+         lowStockThreshold: 2,
       },
       {
-         title: 'Αναδευτήρες μίξερ PYREX SB530 Original 333148',
-         quantity: 12,
-      },
-      {
-         title: 'Αναδευτήρες μίξερ IZZY 3 σε 1 IZ-1001 Original 223534',
-         quantity: 13,
-      },
-      {
-         title: 'Φίλτρο Σφουγγάρι σκούπας Siemens original 17000301',
-         quantity: 24,
-      },
-      {
-         title: 'Κανάτα καφετιέρας Ariete Vintage 1342 Original AT4066009020',
+         title: '333148 - Αναδευτήρες μίξερ PYREX SB530 Original',
          quantity: 5,
+         veryLowStockThreshold: 2,
+         lowStockThreshold: 5,
+      },
+      {
+         title: '223534 - Αναδευτήρες μίξερ IZZY 3 σε 1 IZ-1001 Original',
+         quantity: 10,
+         veryLowStockThreshold: 2,
+         lowStockThreshold: 4,
+      },
+      {
+         title: '17000301 - Φίλτρο Σφουγγάρι σκούπας Siemens original ',
+         quantity: 6,
+         veryLowStockThreshold: 1,
+         lowStockThreshold: 3,
+      },
+      {
+         title: 'AT4066009020 - Κανάτα καφετιέρας Ariete Vintage 1342 Original',
+         quantity: 50,
+         veryLowStockThreshold: 10,
+         lowStockThreshold: 30,
       }
    ]
 

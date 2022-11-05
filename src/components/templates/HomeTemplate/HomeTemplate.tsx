@@ -1,6 +1,5 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import {Div} from "../../atoms";
-import {MinusCircleIcon, PlusCircleIcon} from "../../molecules";
 import {IProduct} from "../../../shared/interfaces";
 import {ProductTable} from "../../organisms";
 
@@ -9,36 +8,43 @@ interface HomeTemplateProps {
 }
 
 export const HomeTemplate = ({products: backendProducts}: HomeTemplateProps) => {
-   const veryLowStockThreshold = 10;
-   const lowStockThreshold = 20;
-   const [products, setProducts] = useState(backendProducts);
    const [searchTerm, setSearchTerm] = useState('');
+   const [allProducts, setAllProducts] = useState((backendProducts));
 
-   const [veryLowStockProducts, setVeryLowStockProducts] = useState(products.filter((product) => {
-      return product.quantity <= veryLowStockThreshold;
+   const [veryLowStockProducts, setVeryLowStockProducts] = useState(allProducts.filter((product) => {
+      return product.quantity <= product.veryLowStockThreshold;
    }));
 
-   const [lowStockProducts, setLowStockProducts] = useState(products.filter((product) => {
-      return product.quantity < lowStockThreshold && product.quantity > veryLowStockThreshold;
+   const [lowStockProducts, setLowStockProducts] = useState(allProducts.filter((product) => {
+      return product.quantity <= product.lowStockThreshold && product.quantity > product.veryLowStockThreshold;
+   }));
+
+   const [products, setProducts] = useState(allProducts.filter((product) => {
+      return product.quantity > product.lowStockThreshold;
    }));
 
    useEffect(() => {
-      const newVeryLowStockProducts = products.filter((product) => {
-         return product.quantity <= veryLowStockThreshold;
+      const newVeryLowStockProducts = allProducts.filter((product) => {
+         return product.quantity <= product.veryLowStockThreshold;
       });
 
-      const newLowStockProducts = products.filter((product) => {
-         return product.quantity < lowStockThreshold && product.quantity > veryLowStockThreshold;
+      const newLowStockProducts = allProducts.filter((product) => {
+         return product.quantity <= product.lowStockThreshold && product.quantity > product.veryLowStockThreshold;
+      });
+
+      const newProducts = allProducts.filter((product) => {
+         return product.quantity > product.lowStockThreshold;
       });
 
       setVeryLowStockProducts(newVeryLowStockProducts);
       setLowStockProducts(newLowStockProducts);
-   }, [products]);
+      setProducts(newProducts);
+   }, [allProducts]);
 
    useEffect(() => {
       if (searchTerm) {
-         const newProducts = products.filter((product) => {
-            return product.title.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
+         const newProducts = allProducts.filter((product) => {
+            return product.quantity > product.lowStockThreshold && product.title.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
          });
 
          if (newProducts) {
@@ -47,22 +53,25 @@ export const HomeTemplate = ({products: backendProducts}: HomeTemplateProps) => 
             setProducts([]);
          }
       } else {
-         setProducts([...products])
+         const newProducts = allProducts.filter((product) => {
+            return product.quantity > product.lowStockThreshold;
+         });
+         setProducts([...newProducts]);
       }
    }, [searchTerm]);
 
    const reduceQuantity = (product: IProduct) => {
       product.quantity = product.quantity - 1;
-      setProducts([...products])
+      setAllProducts([...allProducts]);
    }
 
    const increaseQuantity = (product: IProduct) => {
       product.quantity = product.quantity + 1;
-      setProducts([...products])
+      setAllProducts([...allProducts]);
    }
 
    const onSearchBarChange = (event: ChangeEvent<HTMLInputElement>) => {
-      setSearchTerm(event.target.value)
+      setSearchTerm(event.target.value);
    }
 
    return (
